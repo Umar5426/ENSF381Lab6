@@ -45,18 +45,56 @@ Description : API Usage.
         }
     </style>
     <script>
+	
+	
+	
+	
         // Function to fetch and display students
         async function fetchStudents() {
-            
-        }
+		
+			try {
+				const response = await fetch('https://65dfa0afff5e305f32a2b4f1.mockapi.io/students');     
+				const studentsData = await response.json();       
+				const studentList = document.getElementById('studentList');
+        
+				studentList.innerHTML = '';
+        
+				studentsData.forEach(student => {
+					const listItem = document.createElement('li');
+					listItem.textContent = student.name;           
+					listItem.onclick = () => fetchCourses(student.id);      
+					studentList.appendChild(listItem);
+				});
+			
+			} catch (error) {
+			console.error('Error fetching students:', error);
+			}
+		}
+		
 
         // Function to fetch and display courses for a student
         async function fetchCourses(studentId) {
-            
-        }
-
+			try {
+				const response = await fetch(`https://65dfa0afff5e305f32a2b4f1.mockapi.io/students/${studentId}/courses`);     
+				const coursesData = await response.json();        
+				const courseList = document.getElementById('courseList');       
+				courseList.innerHTML = '';
+        
+				coursesData.forEach(course => {
+					const listItem = document.createElement('li');           
+					listItem.textContent = `${course.name} - ${course.unit}`;            
+					courseList.appendChild(listItem);
+				});
+			} catch (error) {
+				console.error('Error fetching courses:', error);
+			}
+		}
+		
         // Fetch students on window load
         window.onload = fetchStudents;
+		
+		
+		
     </script>
 </head>
 <body>
